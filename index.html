@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Excel Dasar: Dari Nol Jadi Bisa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fdfbf7; color: #1f2937; }
+        .tab-active { border-bottom: 4px solid #10b981; color: #065f46; font-weight: 700; }
+        .tab-inactive { color: #6b7280; }
+        .tab-inactive:hover { color: #10b981; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        /* Animasi Transisi */
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Stepper Styles */
+        .step-btn-active { @apply ring-2 ring-offset-2; }
+        
+        /* Playground Input Styles */
+        .interactive-input:focus { background-color: #f0fdf4; border-color: #10b981; }
+        .active-formula-btn { ring: 2px; ring-offset: 2px; ring-color: currentColor; transform: scale(1.05); }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals & Excel Green. Background #fdfbf7 (Warm White), Primary #10b981 (Emerald/Excel Green), Text #1f2937 (Dark Gray) -->
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-stone-200 py-8 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold text-emerald-700 mb-2">Panduan Olah Data</h1>
+            <p class="text-stone-600 text-lg">Kuasai alur kerja data: Collecting, Cleaning, & Analyzing dengan mudah.</p>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="sticky top-0 z-50 bg-[#fdfbf7]/90 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-5xl mx-auto px-4 flex justify-around md:justify-center md:gap-12 overflow-x-auto">
+            <button onclick="switchTab('collecting')" id="tab-collecting" class="tab-active py-4 px-2 text-sm md:text-base whitespace-nowrap transition-colors">
+                1. Collecting Data
+            </button>
+            <button onclick="switchTab('cleaning')" id="tab-cleaning" class="tab-inactive py-4 px-2 text-sm md:text-base whitespace-nowrap transition-colors">
+                2. Cleaning Data
+            </button>
+            <button onclick="switchTab('analyzing')" id="tab-analyzing" class="tab-inactive py-4 px-2 text-sm md:text-base whitespace-nowrap transition-colors">
+                3. Analyzing Data
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
+
+        <!-- SECTION 1: COLLECTING DATA -->
+        <section id="content-collecting" class="fade-in block">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Tahap 1: Pengumpulan Data (Collecting)</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    Pondasi dari pengolahan data adalah input yang benar. Sebelum masuk ke format, kita harus tahu dulu <strong>bagaimana cara mendapatkan data</strong> ke dalam Excel.
+                </p>
+
+                <!-- [NEW CONTENT START] 3 Cara Mengumpulkan Data -->
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <!-- Cara 1 -->
+                    <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition">
+                        <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-4">⌨️</div>
+                        <h3 class="font-bold text-gray-800 mb-2">1. Input Manual</h3>
+                        <p class="text-sm text-gray-600">
+                            Cara paling dasar. Cocok untuk data sedikit.
+                        </p>
+                        <div class="mt-3 bg-stone-50 p-2 rounded text-xs text-stone-500">
+                            <strong>Caranya:</strong> Klik sel, ketik data, tekan <code>Enter</code> (ke bawah) atau <code>Tab</code> (ke kanan).
+                        </div>
+                    </div>
+
+                    <!-- Cara 2 -->
+                    <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition">
+                        <div class="bg-orange-100 w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-4">📋</div>
+                        <h3 class="font-bold text-gray-800 mb-2">2. Copy-Paste</h3>
+                        <p class="text-sm text-gray-600">
+                            Mengambil data dari Web/Word. Hati-hati format berantakan!
+                        </p>
+                        <div class="mt-3 bg-stone-50 p-2 rounded text-xs text-stone-500">
+                            <strong>Wajib:</strong> Gunakan <em>Paste Values</em> (Klik Kanan > Ikon '123') agar tulisan bersih tanpa warna aneh.
+                        </div>
+                    </div>
+
+                    <!-- Cara 3 -->
+                    <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition">
+                        <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-4">📝</div>
+                        <h3 class="font-bold text-gray-800 mb-2">3. Formulir (Forms)</h3>
+                        <p class="text-sm text-gray-600">
+                            Cara paling efisien. Tidak perlu mengetik ulang.
+                        </p>
+                        <div class="mt-3 bg-stone-50 p-2 rounded text-xs text-stone-500">
+                            <strong>Tips:</strong> Pakai Google Forms / Microsoft Forms. Data otomatis masuk ke Excel/Sheets saat orang mengisi.
+                        </div>
+                    </div>
+                </div>
+                <!-- [NEW CONTENT END] -->
+
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded text-sm text-blue-800 mb-8">
+                    <span class="font-bold">Ingat:</span> Apapun caranya, pastikan hasil akhirnya mengikuti format <strong>"Database"</strong> di bawah ini agar mudah diolah.
+                </div>
+            </div>
+
+            <!-- Interactive Golden Rules -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Bad Example -->
+                <div class="bg-white p-6 rounded-xl card-shadow border border-red-100">
+                    <h3 class="text-lg font-bold text-red-600 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">✕</span> Cara Salah (Ribet)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-red-50 rounded border border-red-200 text-sm">
+                            <p class="font-semibold">Merge Cells di Data</p>
+                            <div class="mt-1 bg-white p-2 border text-center text-xs text-gray-400">Judul Laporan (Merged A1:E1)</div>
+                            <p class="mt-1 text-xs text-red-600">Sulit di-sort dan di-filter!</p>
+                        </div>
+                        <div class="p-3 bg-red-50 rounded border border-red-200 text-sm">
+                            <p class="font-semibold">Info Ganda</p>
+                            <div class="mt-1 bg-white p-2 border text-xs text-gray-600">Budi (Jakarta)</div>
+                            <p class="mt-1 text-xs text-red-600">Susah memisahkan nama & kota.</p>
+                        </div>
+                        <div class="p-3 bg-red-50 rounded border border-red-200 text-sm">
+                            <p class="font-semibold">Format Tidak Konsisten</p>
+                            <div class="mt-1 bg-white p-2 border text-xs text-gray-600">01-Jan, 2 Februari, Tgl 3</div>
+                            <p class="mt-1 text-xs text-red-600">Excel bingung ini tanggal atau teks.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Good Example -->
+                <div class="bg-white p-6 rounded-xl card-shadow border border-emerald-100">
+                    <h3 class="text-lg font-bold text-emerald-600 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">✓</span> Aturan Emas (Format Database)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-emerald-50 rounded border border-emerald-200 text-sm">
+                            <p class="font-semibold">Header Jelas (Baris 1)</p>
+                            <div class="mt-1 grid grid-cols-3 gap-1 text-xs text-center font-bold text-gray-700">
+                                <div class="bg-white p-1 border">No</div>
+                                <div class="bg-white p-1 border">Nama</div>
+                                <div class="bg-white p-1 border">Kota</div>
+                            </div>
+                            <p class="mt-1 text-xs text-emerald-700">Baris pertama khusus judul kolom.</p>
+                        </div>
+                        <div class="p-3 bg-emerald-50 rounded border border-emerald-200 text-sm">
+                            <p class="font-semibold">Satu Sel = Satu Info</p>
+                            <div class="mt-1 grid grid-cols-2 gap-1 text-xs text-center text-gray-600">
+                                <div class="bg-white p-1 border">Budi</div>
+                                <div class="bg-white p-1 border">Jakarta</div>
+                            </div>
+                            <p class="mt-1 text-xs text-emerald-700">Mudah dianalisis per kategori.</p>
+                        </div>
+                        <div class="p-3 bg-emerald-50 rounded border border-emerald-200 text-sm">
+                            <p class="font-semibold">Konsisten</p>
+                            <div class="mt-1 grid grid-cols-3 gap-1 text-xs text-center text-gray-600">
+                                <div class="bg-white p-1 border">01/01/23</div>
+                                <div class="bg-white p-1 border">02/01/23</div>
+                                <div class="bg-white p-1 border">03/01/23</div>
+                            </div>
+                            <p class="mt-1 text-xs text-emerald-700">Format seragam memudahkan rumus.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Bentuk Tabel & Rumus Terkait -->
+            <div class="mt-8 pt-8 border-t border-gray-300">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">
+                    Kenali Bentuk Data & Rumus yang Tepat
+                </h3>
+                <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Analisis data tidak hanya soal angka, tapi juga struktur. Beda bentuk tabelnya, beda pula cara kita menarik datanya nanti.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Tabel Vertikal -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-indigo-700">1. Tabel Vertikal (Standar)</h4>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Data disusun <strong>ke bawah</strong>. Ini adalah format paling umum. 
+                             Data disusun dari atas ke bawah. Setiap kolom biasanya berisi data dengan kategori atau jenis yang sama. .
+                        </p>
+                        <table class="w-full table-auto border-collapse border border-gray-400 font-mono text-sm">
+                            <thead class="bg-gray-200 text-gray-700 font-bold">
+                                <tr>
+                                    <th class="border border-gray-400 p-2 text-left">A (ID)</th>
+                                    <th class="border border-gray-400 p-2 text-left">B (Produk)</th>
+                                    <th class="border border-gray-400 p-2 text-left">C (Harga)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-800">
+                                <tr>
+                                    <td class="border border-gray-400 p-2">101</td>
+                                    <td class="border border-gray-400 p-2">Apel</td>
+                                    <td class="border border-gray-400 p-2">5000</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-400 p-2">102</td>
+                                    <td class="border border-gray-400 p-2">Jeruk</td>
+                                    <td class="border border-gray-400 p-2">7000</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-400 p-2">103</td>
+                                    <td class="border border-gray-400 p-2">Mangga</td>
+                                    <td class="border border-gray-400 p-2">7500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tabel Horizontal -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-indigo-700">2. Tabel Horizontal</h4>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Data disusun <strong>menyamping</strong>. Biasanya untuk rekap periode keuangan. 
+                            Dimana setiap baris mewakili satu grup data yang terkait.
+                        </p>
+                        <table class="w-full table-auto border-collapse border border-gray-400 font-mono text-sm">
+                            <tbody class="text-gray-800">
+                                <tr>
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Bulan</th>
+                                    <td class="border border-gray-400 p-2 bg-gray-50 font-bold">Jan</td>
+                                    <td class="border border-gray-400 p-2 bg-gray-50 font-bold">Feb</td>
+                                    <td class="border border-gray-400 p-2 bg-gray-50 font-bold">Mar</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Omset</th>
+                                    <td class="border border-gray-400 p-2">5 jt</td>
+                                    <td class="border border-gray-400 p-2">7 jt</td>
+                                    <td class="border border-gray-400 p-2">8 jt</td>
+                                </tr>
+                                 <tr>
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Profit</th>
+                                    <td class="border border-gray-400 p-2">2 jt</td>
+                                    <td class="border border-gray-400 p-2">3 jt</td>
+                                    <td class="border border-gray-400 p-2">5 jt</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Tabel Gabungan -->
+                <div class="mt-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-indigo-700">3. Tabel Matriks (Gabungan)</h4>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Merupakan data format "Gabungan vertikal dan horizontal". Data menyebar dalam <strong>baris dan kolom</strong>. 
+                        </p>
+                        <table class="w-full table-auto border-collapse border border-gray-400 font-mono text-sm">
+                            <thead class="bg-gray-200 text-gray-700 font-bold">
+                                <tr>
+                                    <th class="border border-gray-400 p-2 text-left">Items</th>
+                                    <th class="border border-gray-400 p-2 text-left">Toko A</th>
+                                    <th class="border border-gray-400 p-2 text-left">Toko B</th>
+                                    <th class="border border-gray-400 p-2 text-left">Toko C</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-800">
+                                <tr>
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Baju</th>
+                                    <td class="border border-gray-400 p-2">100</td>
+                                    <td class="border border-gray-400 p-2">110</td>
+                                    <td class="border border-gray-400 p-2">120</td>
+                                </tr>
+                                <tr class="bg-yellow-50"> 
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Jaket</th>
+                                    <td class="border border-gray-400 p-2">250</td>
+                                    <td class="border border-gray-400 p-2 font-bold text-blue-700">260</td>
+                                    <td class="border border-gray-400 p-2">270</td>
+                                </tr>
+                                 <tr>
+                                    <th class="bg-gray-200 text-gray-700 font-bold border border-gray-400 p-2 text-left">Celana</th>
+                                    <td class="border border-gray-400 p-2">150</td>
+                                    <td class="border border-gray-400 p-2">200</td>
+                                    <td class="border border-gray-400 p-2">220</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-4 p-3 bg-gray-100 rounded text-sm text-gray-700">
+                            <strong>Contoh Rencana:</strong> <br>
+                            Dalam statistik, ini disebut Tabel Kontingensi, digunakan untuk merekam dan menganalisis hubungan antara dua variabel kategori (dalam kasus ini: Items dan Toko).
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button onclick="switchTab('cleaning')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    Lanjut ke Cleaning Data →
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CLEANING DATA -->
+        <section id="content-cleaning" class="hidden fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Tahap 2: Pembersihan Data (Cleaning)</h2>
+                
+                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-5 rounded-r mb-8">
+                    <h3 class="font-bold text-indigo-800 mb-2">Kenapa Data Harus Dibersihkan?</h3>
+                    <ul class="list-disc list-inside text-sm text-indigo-800 space-y-1">
+                        <li><strong>Agar Rumus Tidak Error:</strong> Spasi berlebih membuat data tidak terbaca rumus VLOOKUP/IF.</li>
+                        <li><strong>Agar Laporan Profesional:</strong> Huruf besar kecil yang acak-acakan terlihat tidak rapi.</li>
+                        <li><strong>Agar Hitungan Akurat:</strong> Data duplikat membuat total penjualan menjadi salah (markup).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Horizontal Cleaning Menu (Stepper) -->
+            <div class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button onclick="selectCleaningTab('trim')" id="clean-tab-trim" class="py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-blue-50 border-blue-500 text-blue-800 shadow-md">
+                    <span class="block text-xs font-bold uppercase tracking-wider mb-1">Langkah 1</span>
+                    <span class="font-bold text-sm md:text-lg">Hapus Spasi (TRIM)</span>
+                </button>
+                <button onclick="selectCleaningTab('proper')" id="clean-tab-proper" class="py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-gray-50 border-gray-200 text-gray-400" disabled>
+                    <span class="block text-xs font-bold uppercase tracking-wider mb-1">Langkah 2</span>
+                    <span class="font-bold text-sm md:text-lg">Rapikan Huruf</span>
+                </button>
+                <button onclick="selectCleaningTab('highlight')" id="clean-tab-highlight" class="py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-gray-50 border-gray-200 text-gray-400" disabled>
+                    <span class="block text-xs font-bold uppercase tracking-wider mb-1">Langkah 3</span>
+                    <span class="font-bold text-sm md:text-lg">Cek Duplikat</span>
+                </button>
+                <button onclick="selectCleaningTab('dedup')" id="clean-tab-dedup" class="py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-gray-50 border-gray-200 text-gray-400" disabled>
+                    <span class="block text-xs font-bold uppercase tracking-wider mb-1">Langkah 4</span>
+                    <span class="font-bold text-sm md:text-lg">Hapus Duplikat</span>
+                </button>
+            </div>
+
+            <!-- Explanation & Action Panel (Dynamic) -->
+            <div id="cleaning-info-panel" class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm mb-8 transition-all">
+                <!-- Content Injected via JS -->
+                <div class="text-center text-gray-500 py-8">
+                    Memuat panel...
+                </div>
+            </div>
+
+            <!-- Live Table (Full Width) -->
+            <div class="w-full bg-white rounded-xl card-shadow overflow-hidden border border-stone-200">
+                <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                    <span class="font-mono text-sm font-semibold text-gray-600 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        file_latihan_cleaning.xlsx
+                    </span>
+                    <span id="cleaning-status" class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full uppercase tracking-wide">DATA KOTOR</span>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                            <tr>
+                                <th class="px-6 py-4 font-bold">No</th>
+                                <th class="px-6 py-4 font-bold">Nama Karyawan</th>
+                                <th class="px-6 py-4 font-bold">Divisi</th>
+                                <th class="px-6 py-4 font-bold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cleaning-table-body" class="bg-white divide-y divide-gray-100">
+                            <!-- JS renders rows here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="p-4 bg-yellow-50 text-sm text-yellow-800 border-t border-yellow-100 flex items-center gap-3">
+                    <span class="text-xl">💡</span>
+                    <p id="cleaning-feedback">Perhatikan tabel di atas. Ada spasi berlebih, huruf besar semua/kecil semua, dan data ganda.</p>
+                </div>
+            </div>
+
+             <div class="mt-8 text-center hidden" id="cleaning-next-btn">
+                <button onclick="switchTab('analyzing')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    Lanjut ke Analyzing Data →
+                </button>
+            </div>
+            
+            <div class="mt-4 text-center">
+                 <button onclick="resetCleaning()" class="text-gray-400 hover:text-gray-600 text-sm underline">Reset Data (Ulangi dari Awal)</button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ANALYZING DATA -->
+        <section id="content-analyzing" class="hidden fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Tahap 3: Analisis Data (Analyzing)</h2>
+                <p class="text-gray-600 mb-4">
+                    Data sudah bersih! Saatnya mencari wawasan (Insights). 
+                    Sebagai pemula, kamu hanya butuh 4 rumus sakti ini: <strong>SUM, AVERAGE, MIN, dan MAX</strong>.
+                </p>
+            </div>
+
+            <!-- PLAYGROUND RUMUS (Inserted Here) -->
+            <div class="bg-white rounded-xl card-shadow p-6 md:p-8 mb-12 border border-stone-200">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#118AB2] mb-2">Playground Rumus Interaktif</h2>
+                <p class="text-center text-gray-600 mb-8">Ubah angka di Worksheet, lalu pilih rumus di bawah untuk melihat hasilnya!</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    
+                    <!-- Worksheet (Input) -->
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-center text-gray-700">Data Kamu (Worksheet)</h3>
+                        <div class="border border-gray-300 rounded-lg p-2 bg-gray-50 shadow-inner">
+                            <div class="grid grid-cols-[3rem,1fr,1fr] gap-x-1 font-mono text-center text-gray-500 mb-1">
+                                <div class="p-2"></div>
+                                <div class="p-2 bg-gray-200 rounded font-bold text-gray-600">A (Harga)</div>
+                                <div class="p-2 bg-gray-200 rounded font-bold text-gray-600">B (Jml)</div>
+                            </div>
+                            <div class="grid grid-cols-[3rem,1fr,1fr] gap-1 items-center mb-1">
+                                <div class="p-2 font-mono font-bold text-center text-gray-600 bg-gray-200 rounded">1</div>
+                                <input type="number" data-col="A" value="50000" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                                <input type="number" data-col="B" value="2" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                            </div>
+                            <div class="grid grid-cols-[3rem,1fr,1fr] gap-1 items-center mb-1">
+                                <div class="p-2 font-mono font-bold text-center text-gray-600 bg-gray-200 rounded">2</div>
+                                <input type="number" data-col="A" value="35000" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                                <input type="number" data-col="B" value="1" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                            </div>
+                            <div class="grid grid-cols-[3rem,1fr,1fr] gap-1 items-center mb-1">
+                                <div class="p-2 font-mono font-bold text-center text-gray-600 bg-gray-200 rounded">3</div>
+                                <input type="number" data-col="A" value="70000" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                                <input type="number" data-col="B" value="3" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                            </div>
+                            <div class="grid grid-cols-[3rem,1fr,1fr] gap-1 items-center mb-1">
+                                <div class="p-2 font-mono font-bold text-center text-gray-600 bg-gray-200 rounded">4</div>
+                                <input type="number" data-col="A" value="25000" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                                <input type="number" data-col="B" value="4" class="data-input w-full p-2 border border-gray-300 rounded text-right font-mono focus:outline-none focus:ring-2 focus:ring-[#118AB2] interactive-input transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Panel -->
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-center text-gray-700">Hasil Perhitungan</h3>
+                        <!-- Formula Bar Lookalike -->
+                        <div class="flex items-center bg-white p-1 rounded-lg border border-gray-300 shadow-sm">
+                            <span class="font-mono text-gray-500 font-bold px-3 py-2 bg-gray-100 rounded-l border-r italic">fx</span>
+                            <div id="formula-bar" class="w-full px-3 py-2 font-mono text-gray-800 truncate">
+                                =SUM(A1:A4)
+                            </div>
+                        </div>
+
+                        <!-- Big Result Display -->
+                        <div id="result-display" class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center shadow-inner">
+                            <h4 id="result-title" class="text-lg font-bold text-[#06D6A0] uppercase tracking-wide">SUM (Total)</h4>
+                            <p id="result-value" class="text-4xl md:text-5xl font-extrabold text-gray-800 mt-2 transition-all">180.000</p>
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="formula-btn p-3 rounded-lg font-bold bg-[#06D6A0] text-white hover:opacity-90 transition transform hover:-translate-y-1 shadow-md active-formula-btn" data-name="sum">SUM</button>
+                            <button class="formula-btn p-3 rounded-lg font-bold bg-[#FFD166] text-white hover:opacity-90 transition transform hover:-translate-y-1 shadow-md" data-name="average">AVERAGE</button>
+                            <button class="formula-btn p-3 rounded-lg font-bold bg-[#FF6B6B] text-white hover:opacity-90 transition transform hover:-translate-y-1 shadow-md" data-name="max">MAX</button>
+                            <button class="formula-btn p-3 rounded-lg font-bold bg-[#118AB2] text-white hover:opacity-90 transition transform hover:-translate-y-1 shadow-md" data-name="min">MIN</button>
+                            <button class="formula-btn p-3 rounded-lg font-bold bg-[#8338ec] text-white hover:opacity-90 transition transform hover:-translate-y-1 shadow-md col-span-2" data-name="sumproduct">SUMPRODUCT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formula Explanation Box -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Penjelasan Rumus:</h3>
+                    <div id="explanation-container" class="p-5 rounded-xl border-l-4 transition-all duration-300 bg-green-50 border-green-400">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+            <!-- END PLAYGROUND -->
+
+            <!-- Dashboard Layout (Existing) -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                
+                <!-- Chart Area -->
+                <div class="bg-white p-4 rounded-xl card-shadow border border-stone-200 order-2 lg:order-1">
+                    <h3 class="font-bold text-gray-700 mb-4 text-center">Statistik Nilai Siswa (Contoh Kasus)</h3>
+                    <div class="chart-container">
+                        <canvas id="analysisChart"></canvas>
+                    </div>
+                    
+                    <!-- Updated Stats Grid: 2x2 for SUM, AVG, MIN, MAX -->
+                    <div class="mt-4 grid grid-cols-2 gap-3 text-center">
+                        <div class="bg-blue-50 p-3 rounded">
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Total (SUM)</p>
+                            <p id="stat-sum" class="text-xl font-bold text-blue-600">-</p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded">
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Rata-Rata (AVERAGE)</p>
+                            <p id="stat-avg" class="text-xl font-bold text-green-600">-</p>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded">
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Terendah (MIN)</p>
+                            <p id="stat-min" class="text-xl font-bold text-red-600">-</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded">
+                            <p class="text-xs text-gray-500 uppercase font-semibold">Tertinggi (MAX)</p>
+                            <p id="stat-max" class="text-xl font-bold text-purple-600">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interaction & Data Table -->
+                <div class="space-y-6 order-1 lg:order-2">
+                    
+                    <!-- Controls -->
+                    <div class="bg-white p-6 rounded-xl card-shadow border border-stone-200">
+                        <h3 class="font-bold text-gray-800 mb-3">Menu Rumus (Data Siswa)</h3>
+                        <p class="text-sm text-gray-500 mb-4">Rumus dihitung otomatis untuk tabel ini:</p>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <!-- Removed Logic Button, focused on Stats -->
+                            <button onclick="analyzeAction('calc')" class="col-span-2 bg-blue-100 hover:bg-blue-200 text-blue-700 py-3 px-4 rounded text-sm font-bold transition flex justify-between items-center group">
+                                <span>Hitung Ulang Statistik</span>
+                                <span class="bg-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">Klik!</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mini Data Table (Excel Style) -->
+                    <div class="bg-white rounded-xl card-shadow overflow-hidden border border-stone-300">
+                        <!-- Excel Window Title Bar -->
+                        <div class="bg-[#217346] px-4 py-2 border-b border-[#1e6b41] text-xs font-bold text-white flex justify-between items-center shadow-sm">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v5h5v11H6z"/></svg>
+                                Data_Nilai_Siswa.xlsx
+                            </span>
+                            <div class="flex gap-1">
+                                <span class="w-2 h-2 rounded-full bg-white/30"></span>
+                                <span class="w-2 h-2 rounded-full bg-white/30"></span>
+                                <span class="w-2 h-2 rounded-full bg-white/30"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto bg-white">
+                            <table class="w-full text-sm font-mono border-collapse">
+                                <thead>
+                                    <!-- Column Indicators (A, B, C...) -->
+                                    <tr class="bg-[#f3f3f3] text-gray-500 text-center text-xs font-bold">
+                                        <th class="w-10 border border-gray-300 bg-[#e6e6e6]"></th> <!-- Corner -->
+                                        <th class="border border-gray-300 px-2 py-1 w-1/2 hover:bg-[#d4d4d4] transition cursor-pointer">A</th>
+                                        <th class="border border-gray-300 px-2 py-1 w-1/2 hover:bg-[#d4d4d4] transition cursor-pointer">B</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="analysis-table-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Sheet Tab -->
+                        <div class="bg-[#f3f3f3] border-t border-gray-300 px-2 py-1 flex gap-1">
+                            <div class="bg-white px-3 py-1 text-xs font-bold text-[#217346] border-b-2 border-[#217346] shadow-sm cursor-pointer">Sheet1</div>
+                            <div class="px-3 py-1 text-xs font-bold text-gray-400 cursor-pointer hover:bg-gray-200 rounded">Sheet2</div>
+                            <div class="px-2 py-1 text-xs font-bold text-gray-400 cursor-pointer hover:bg-gray-200 rounded">+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet / Footer -->
+        <section class="mt-12 pt-8 border-t border-stone-200">
+            <div class="bg-stone-800 text-stone-300 rounded-xl p-6 md:p-8">
+                <h2 class="text-xl md:text-2xl font-bold text-white mb-6">Rangkuman Cepat</h2>
+                <div class="grid md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <h3 class="font-bold text-emerald-400 mb-2 border-b border-stone-600 pb-1">1. Collecting</h3>
+                        <ul class="space-y-1 list-disc list-inside">
+                            <li>Baris 1 harus <strong>Header</strong>.</li>
+                            <li>Jangan <strong>Merge Cells</strong>.</li>
+                            <li>Gunakan <strong>Paste Values</strong> (123).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-blue-400 mb-2 border-b border-stone-600 pb-1">2. Cleaning</h3>
+                        <ul class="space-y-1 list-disc list-inside">
+                            <li><code class="bg-stone-700 px-1 rounded">=TRIM()</code> : Hapus spasi.</li>
+                            <li><code class="bg-stone-700 px-1 rounded">=PROPER()</code> : Rapikan huruf.</li>
+                            <li><strong>Duplicate</strong> : Cek dulu baru hapus.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-purple-400 mb-2 border-b border-stone-600 pb-1">3. Analyzing</h3>
+                        <ul class="space-y-1 list-disc list-inside">
+                            <li><code class="bg-stone-700 px-1 rounded">=SUM()</code> : Total.</li>
+                            <li><code class="bg-stone-700 px-1 rounded">=AVERAGE()</code> : Rata-rata.</li>
+                            <li><code class="bg-stone-700 px-1 rounded">=SUMPRODUCT()</code> : Total Perkalian.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 text-stone-400 text-sm">
+        <p>Generated based on "Panduan Excel Pemula"</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- State Management ---
+        const state = {
+            currentTab: 'collecting',
+            cleaning: {
+                step: 0, // 0: Dirty, 1: Trimmed, 2: Proper, 3: Highlight, 4: Deduplicated
+                data: [
+                    { id: 1, name: "  anDI saputra  ", dept: "HRD", status: "Permanent" },
+                    { id: 2, name: "budi SANTOSO", dept: "Marketing", status: "Kontrak" },
+                    { id: 3, name: "  CITRA dewi", dept: "Finance", status: "Permanent" },
+                    { id: 4, name: "budi SANTOSO", dept: "Marketing", status: "Kontrak" }, // Duplicate
+                    { id: 5, name: "EKO  Purnomo  ", dept: "IT", status: "Permanent" }
+                ]
+            },
+            analyzing: {
+                isCalc: false, // KEMBALI KE FALSE: Statistik muncul hanya setelah tombol diklik
+                filterValue: null,
+                showFormat: false,
+                data: [
+                    { name: "Andi", score: 85 },
+                    { name: "Budi", score: 65 },
+                    { name: "Citra", score: 92 },
+                    { name: "Dewi", score: 78 },
+                    { name: "Eko", score: 55 },
+                    { name: "Fajar", score: 88 }
+                ]
+            }
+        };
+
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            document.querySelectorAll('section[id^="content-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            
+            const tabs = ['collecting', 'cleaning', 'analyzing'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    btn.className = 'tab-active py-4 px-2 text-sm md:text-base whitespace-nowrap transition-colors border-b-4 border-emerald-500 text-emerald-800 font-bold';
+                } else {
+                    btn.className = 'tab-inactive py-4 px-2 text-sm md:text-base whitespace-nowrap transition-colors hover:text-emerald-600';
+                }
+            });
+
+            state.currentTab = tabId;
+
+            if (tabId === 'analyzing') {
+                if (!myChart) initChart();
+                renderAnalysisTable();
+                // Ensure playground is initialized if not already (it runs on DOMContentLoaded)
+            }
+            if (tabId === 'cleaning') {
+                renderCleaningUI();
+            }
+        }
+
+        // --- Cleaning Data Logic ---
+        function selectCleaningTab(tabName) {
+            renderCleaningContent(tabName);
+        }
+
+        function renderCleaningUI() {
+            const btnTrim = document.getElementById('clean-tab-trim');
+            const btnProper = document.getElementById('clean-tab-proper');
+            const btnHighlight = document.getElementById('clean-tab-highlight');
+            const btnDedup = document.getElementById('clean-tab-dedup');
+            
+            const inactiveStyle = "py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed";
+            const activeStyle = "py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all shadow-md transform scale-[1.02]";
+            const doneStyle = "py-3 px-2 rounded-lg border-2 text-center md:text-left transition-all bg-emerald-50 border-emerald-200 text-emerald-700 opacity-70";
+
+            // TRIM (Step 1)
+            if (state.cleaning.step === 0) {
+                btnTrim.className = activeStyle + " bg-blue-50 border-blue-500 text-blue-800";
+                btnTrim.disabled = false;
+                renderCleaningContent('trim');
+            } else {
+                btnTrim.className = doneStyle;
+                btnTrim.disabled = false;
+            }
+
+            // PROPER (Step 2)
+            if (state.cleaning.step === 1) {
+                btnProper.className = activeStyle + " bg-purple-50 border-purple-500 text-purple-800";
+                btnProper.disabled = false;
+                renderCleaningContent('proper');
+            } else if (state.cleaning.step > 1) {
+                btnProper.className = doneStyle;
+                btnProper.disabled = false;
+            } else {
+                btnProper.className = inactiveStyle;
+                btnProper.disabled = true;
+            }
+
+            // HIGHLIGHT (Step 3)
+            if (state.cleaning.step === 2) {
+                btnHighlight.className = activeStyle + " bg-pink-50 border-pink-500 text-pink-800";
+                btnHighlight.disabled = false;
+                renderCleaningContent('highlight');
+            } else if (state.cleaning.step > 2) {
+                btnHighlight.className = doneStyle;
+                btnHighlight.disabled = false;
+            } else {
+                btnHighlight.className = inactiveStyle;
+                btnHighlight.disabled = true;
+            }
+
+            // DEDUP (Step 4)
+            if (state.cleaning.step === 3) {
+                btnDedup.className = activeStyle + " bg-orange-50 border-orange-500 text-orange-800";
+                btnDedup.disabled = false;
+                renderCleaningContent('dedup');
+            } else if (state.cleaning.step > 3) {
+                btnDedup.className = doneStyle;
+                btnDedup.disabled = false;
+                renderCleaningContent('done');
+            } else {
+                btnDedup.className = inactiveStyle;
+                btnDedup.disabled = true;
+            }
+        }
+
+        function renderCleaningContent(type) {
+            const panel = document.getElementById('cleaning-info-panel');
+            let content = "";
+
+            if (type === 'trim') {
+                content = `
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-blue-700 mb-2">Masalah: Spasi Berantakan</h4>
+                            <p class="text-gray-600 mb-4">
+                                Banyak data web memiliki spasi berlebih. Ini membuat rumus VLOOKUP gagal.
+                            </p>
+                            <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 font-mono mb-4">
+                                =TRIM(teks)
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button onclick="cleanData('trim')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105">
+                                Bersihkan Spasi Sekarang
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'proper') {
+                content = `
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-purple-700 mb-2">Masalah: Huruf Besar/Kecil</h4>
+                            <p class="text-gray-600 mb-3">
+                                Ada 3 rumus utama untuk mengubah kapitalisasi huruf di Excel:
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center bg-purple-50 p-2 rounded border border-purple-200">
+                                    <code class="font-bold text-purple-800 w-32">=PROPER(teks)</code> 
+                                    <span class="text-sm text-gray-700">→ "Budi Santoso" (Huruf Besar di Awal Kata)</span>
+                                </div>
+                                <div class="flex items-center bg-gray-50 p-2 rounded border border-gray-200">
+                                    <code class="font-bold text-gray-600 w-32">=UPPER(teks)</code> 
+                                    <span class="text-sm text-gray-600">→ "BUDI SANTOSO" (Huruf Besar Semua)</span>
+                                </div>
+                                <div class="flex items-center bg-gray-50 p-2 rounded border border-gray-200">
+                                    <code class="font-bold text-gray-600 w-32">=LOWER(teks)</code> 
+                                    <span class="text-sm text-gray-600">→ "budi santoso" (Huruf Kecil Semua)</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 italic">Untuk nama orang, biasanya kita gunakan PROPER.</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button onclick="cleanData('proper')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105">
+                                Rapikan (Pakai PROPER)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'highlight') {
+                content = `
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-pink-700 mb-2">Masalah: Cek Data Ganda</h4>
+                            <p class="text-gray-600 mb-4">
+                                Sebelum menghapus, <strong>wajib</strong> melihat mana yang ganda agar tidak salah hapus.
+                            </p>
+                            <div class="bg-pink-50 p-3 rounded text-sm text-pink-800 font-mono mb-4">
+                                Home > Conditional Formatting > Highlight Cell Rules > Duplicate Values
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button onclick="cleanData('highlight')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105">
+                                Tandai Duplikat (Merah)
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'dedup') {
+                content = `
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold text-orange-700 mb-2">Masalah: Hapus Data Ganda</h4>
+                            <p class="text-gray-600 mb-4">
+                                Setelah yakin data itu ganda, barulah kita hapus untuk mencegah hitungan ganda.
+                            </p>
+                            <div class="bg-orange-50 p-3 rounded text-sm text-orange-800 font-mono mb-4">
+                                Data > Remove Duplicates
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button onclick="cleanData('deduplicate')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105">
+                                Hapus Duplikat Sekarang
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'done') {
+                content = `
+                     <div class="text-center py-4">
+                        <h4 class="text-2xl font-bold text-emerald-600 mb-2">✨ Data Sudah Bersih! ✨</h4>
+                        <p class="text-gray-600 mb-6">Semua langkah pembersihan sudah selesai. Tabel di bawah sudah rapi dan siap dianalisis.</p>
+                        <button onclick="switchTab('analyzing')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                            Lanjut ke Tahap 3: Analyzing →
+                        </button>
+                    </div>
+                `;
+            }
+
+            panel.innerHTML = content;
+        }
+
+        function renderCleaningTable() {
+            const tbody = document.getElementById('cleaning-table-body');
+            tbody.innerHTML = '';
+            
+            let displayData = [...state.cleaning.data];
+
+            // Filter duplicates logic for display if step 4 (Dedup done)
+            if (state.cleaning.step >= 4) {
+                 const seenNames = new Set();
+                 displayData = displayData.filter(item => {
+                     // PERBAIKAN: Cek berdasarkan Nama, bukan ID
+                     if(!seenNames.has(item.name)) {
+                         seenNames.add(item.name);
+                         return true;
+                     }
+                     return false;
+                 });
+            }
+
+            displayData.forEach((row, index) => {
+                let name = row.name;
+                
+                // Apply visual transformations
+                if (state.cleaning.step >= 1) name = name.trim().replace(/\s+/g, ' '); // Trim
+                if (state.cleaning.step >= 2) name = toProperCase(name); // Proper
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition border-b border-gray-100";
+                
+                // Highlight Logic for Duplicates
+                // Assume ID 4 is the duplicate of ID 2
+                const isDuplicate = (row.id === 4 || row.id === 2);
+                
+                if (isDuplicate && state.cleaning.step === 3) {
+                    // Highlight Step active
+                    tr.className += " bg-pink-100 text-pink-800 font-bold";
+                } else if (row.id === 4 && state.cleaning.step < 3) {
+                    // Pre-highlight warning (subtle red)
+                    tr.classList.add('bg-red-50');
+                }
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-medium">${index + 1}</td>
+                    <td class="px-6 py-4 ${state.cleaning.step === 0 ? 'bg-yellow-100' : ''} font-mono text-xs md:text-sm font-semibold">${name}</td>
+                    <td class="px-6 py-4">${row.dept}</td>
+                    <td class="px-6 py-4">${row.status}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toProperCase(str) {
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+
+        function cleanData(action) {
+            const feedback = document.getElementById('cleaning-feedback');
+            const status = document.getElementById('cleaning-status');
+
+            if (action === 'trim') {
+                state.cleaning.step = 1;
+                feedback.innerHTML = "<strong>Hebat!</strong> Spasi dihapus. Kolom Nama rata kiri, tapi huruf masih berantakan.";
+                status.textContent = "TAHAP 1 SELESAI";
+                status.className = "text-xs font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full uppercase";
+            } else if (action === 'proper') {
+                state.cleaning.step = 2;
+                feedback.innerHTML = "<strong>Rapi!</strong> Huruf sudah diperbaiki. Selanjutnya, mari kita cek apakah ada data ganda.";
+                status.textContent = "TAHAP 2 SELESAI";
+                status.className = "text-xs font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full uppercase";
+            } else if (action === 'highlight') {
+                state.cleaning.step = 3;
+                feedback.innerHTML = "<strong>Ketemu!</strong> Baris berwarna <span class='text-pink-600 font-bold'>PINK</span> adalah data ganda. Sekarang aman untuk dihapus.";
+                status.textContent = "DUPLIKAT DITANDAI";
+                status.className = "text-xs font-bold text-pink-600 bg-pink-100 px-3 py-1 rounded-full uppercase";
+            } else if (action === 'deduplicate') {
+                state.cleaning.step = 4;
+                feedback.innerHTML = "<strong>Sempurna!</strong> Data ganda dihapus. Data bersih total.";
+                status.textContent = "BERSIH (CLEAN)";
+                status.className = "text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full uppercase";
+                document.getElementById('cleaning-next-btn').classList.remove('hidden');
+            }
+            renderCleaningTable();
+            renderCleaningUI();
+        }
+
+        function resetCleaning() {
+            state.cleaning.step = 0;
+            document.getElementById('cleaning-feedback').textContent = "Perhatikan tabel di atas. Ada spasi berlebih, huruf besar semua/kecil semua, dan data ganda.";
+            document.getElementById('cleaning-status').textContent = "DATA KOTOR";
+            document.getElementById('cleaning-status').className = "text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full uppercase";
+            document.getElementById('cleaning-next-btn').classList.add('hidden');
+            renderCleaningTable();
+            renderCleaningUI();
+        }
+
+        // --- Analyzing Data Logic ---
+        function analyzeAction(action) {
+            if (action === 'calc') {
+                state.analyzing.isCalc = true;
+                updateStats();
+            } else if (action === 'filter') {
+                state.analyzing.filterValue = 70;
+            } else if (action === 'reset_filter') {
+                state.analyzing.filterValue = null;
+            } else if (action === 'cond_format') {
+                state.analyzing.showFormat = !state.analyzing.showFormat;
+            }
+            
+            renderAnalysisTable();
+            updateChart();
+        }
+
+        function getFilteredData() {
+            if (state.analyzing.filterValue === null) return state.analyzing.data;
+            return state.analyzing.data.filter(d => d.score > state.analyzing.filterValue);
+        }
+
+        function updateStats() {
+            const data = getFilteredData();
+            if (data.length === 0) {
+                document.getElementById('stat-sum').textContent = "0";
+                document.getElementById('stat-avg').textContent = "0";
+                document.getElementById('stat-min').textContent = "0";
+                document.getElementById('stat-max').textContent = "0";
+                return;
+            }
+            const sum = data.reduce((a, b) => a + b.score, 0);
+            const avg = (sum / data.length).toFixed(1);
+            const min = Math.min(...data.map(d => d.score));
+            const max = Math.max(...data.map(d => d.score));
+
+            // Logic: Jika isCalc true (tombol sudah diklik), tampilkan angka. Jika false, tampilkan "-"
+            document.getElementById('stat-sum').textContent = state.analyzing.isCalc ? sum : "-";
+            document.getElementById('stat-avg').textContent = state.analyzing.isCalc ? avg : "-";
+            document.getElementById('stat-min').textContent = state.analyzing.isCalc ? min : "-";
+            document.getElementById('stat-max').textContent = state.analyzing.isCalc ? max : "-";
+        }
+
+        function renderAnalysisTable() {
+            const tbody = document.getElementById('analysis-table-body');
+            tbody.innerHTML = '';
+            const data = getFilteredData();
+
+            // Row 1: Headers (Simulated as Data)
+            const headerTr = document.createElement('tr');
+            headerTr.innerHTML = `
+                <td class="bg-[#f3f3f3] border border-gray-300 text-center text-gray-500 text-xs font-bold w-10">1</td>
+                <td class="border border-gray-300 px-3 py-1 font-bold text-center bg-gray-50 text-gray-800">Nama Siswa</td>
+                <td class="border border-gray-300 px-3 py-1 font-bold text-center bg-gray-50 text-gray-800">Nilai Ujian</td>
+            `;
+            tbody.appendChild(headerTr);
+
+            // Data Rows (Starting from Row 2)
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-50 transition"; // Excel hover effect
+                
+                const scoreClass = (state.analyzing.showFormat && row.score > 80) ? "bg-emerald-100 text-emerald-800 font-bold" : "";
+                
+                // Row Number (Index + 2 because Row 1 is header)
+                const rowNum = index + 2;
+
+                tr.innerHTML = `
+                    <td class="bg-[#f3f3f3] border border-gray-300 text-center text-gray-500 text-xs font-bold">${rowNum}</td>
+                    <td class="border border-gray-300 px-3 py-1 text-gray-800">${row.name}</td>
+                    <td class="border border-gray-300 px-3 py-1 text-right text-gray-800 ${scoreClass}">${row.score}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Re-calc stats in case filter changed
+            updateStats();
+        }
+
+        // --- Chart.js Setup ---
+        let myChart = null;
+
+        function initChart() {
+            const ctx = document.getElementById('analysisChart').getContext('2d');
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Nilai Siswa',
+                        data: [],
+                        backgroundColor: '#10b981',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+            updateChart();
+        }
+
+        function updateChart() {
+            if (!myChart) return;
+            const data = getFilteredData();
+            myChart.data.labels = data.map(d => d.name);
+            myChart.data.datasets[0].data = data.map(d => d.score);
+            myChart.update();
+        }
+
+        // --- Playground Logic (Added) ---
+        function initPlayground() {
+            const inputs = document.querySelectorAll('.data-input');
+            const formulaBar = document.getElementById('formula-bar');
+            const resultTitle = document.getElementById('result-title');
+            const resultValue = document.getElementById('result-value');
+            const formulaButtons = document.querySelectorAll('.formula-btn');
+            const explanationContainer = document.getElementById('explanation-container');
+
+            let activeFormula = 'sum';
+            let calculatedResults = {};
+            const formatter = new Intl.NumberFormat('id-ID');
+
+            const formulaDetails = {
+                sum: { 
+                    title: "SUM (Total)", 
+                    explanationTitle: "SUM: Si Penjumlah Super Cepat",
+                    formula: "=SUM(A1:A4)", 
+                    color: "text-[#06D6A0]",
+                    explanation: "Menjumlahkan semua angka di Kolom A (Harga).",
+                    style: "bg-green-50 border-green-400",
+                    syntax: "SUM(A1:A4)",
+                    syntaxExplanation: "Rumus ini hanya menghitung total dari kolom A."
+                },
+                average: { 
+                    title: "AVERAGE (Rata-Rata)", 
+                    explanationTitle: "AVERAGE: Si Pencari Rata-Rata",
+                    formula: "=AVERAGE(A1:A4)", 
+                    color: "text-[#FFD166]",
+                    explanation: "Mencari rata-rata nilai dari Kolom A (Harga).",
+                    style: "bg-yellow-50 border-yellow-400",
+                    syntax: "AVERAGE(A1:A4)",
+                    syntaxExplanation: "Rumus ini menghitung rata-rata dari kolom A saja."
+                },
+                max: { 
+                    title: "MAX (Tertinggi)", 
+                    explanationTitle: "MAX: Sang Juara Nilai Tertinggi",
+                    formula: "=MAX(A1:A4)", 
+                    color: "text-[#FF6B6B]",
+                    explanation: "Mencari harga paling mahal di Kolom A.",
+                    style: "bg-red-50 border-red-400",
+                    syntax: "MAX(A1:A4)",
+                    syntaxExplanation: "Rumus ini mencari nilai maksimum di kolom A."
+                },
+                min: { 
+                    title: "MIN (Terendah)", 
+                    explanationTitle: "MIN: Ahli Nilai Terkecil",
+                    formula: "=MIN(A1:A4)", 
+                    color: "text-[#118AB2]",
+                    explanation: "Mencari harga paling murah di Kolom A.",
+                    style: "bg-cyan-50 border-cyan-400",
+                    syntax: "MIN(A1:A4)",
+                    syntaxExplanation: "Rumus ini mencari nilai minimum di kolom A."
+                },
+                sumproduct: { 
+                    title: "SUMPRODUCT (Total Omset)", 
+                    explanationTitle: "SUMPRODUCT: Perkalian Otomatis",
+                    formula: "=SUMPRODUCT(A1:A4; B1:B4)", 
+                    color: "text-[#8338ec]",
+                    explanation: "Mengalikan (Harga x Jumlah) untuk setiap baris, lalu menjumlahkan totalnya. Sangat cepat untuk menghitung omset!",
+                    style: "bg-purple-50 border-purple-400",
+                    syntax: "SUMPRODUCT(array1; array2)",
+                    syntaxExplanation: "Rumus ini mengalikan A1*B1, A2*B2, dst, lalu menjumlahkan hasilnya."
+                }
+            };
+
+            function calculate() {
+                // Select inputs specifically by column
+                const inputsA = Array.from(document.querySelectorAll('.data-input[data-col="A"]')).map(i => parseFloat(i.value) || 0);
+                const inputsB = Array.from(document.querySelectorAll('.data-input[data-col="B"]')).map(i => parseFloat(i.value) || 0);
+
+                // Basic Stats (Col A only)
+                const validNumbersA = inputsA.filter(n => !isNaN(n));
+                const sum = validNumbersA.reduce((acc, val) => acc + val, 0);
+                const average = validNumbersA.length ? sum / validNumbersA.length : 0;
+                const max = validNumbersA.length ? Math.max(...validNumbersA) : 0;
+                const min = validNumbersA.length ? Math.min(...validNumbersA) : 0;
+
+                // SumProduct Logic (A * B)
+                let sumproduct = 0;
+                for(let i = 0; i < inputsA.length; i++) {
+                    sumproduct += (inputsA[i] * inputsB[i]);
+                }
+
+                calculatedResults = { sum, average, max, min, sumproduct };
+            }
+
+            function updateDisplay() {
+                const details = formulaDetails[activeFormula];
+                const value = calculatedResults[activeFormula];
+
+                formulaBar.textContent = details.formula;
+                resultTitle.textContent = details.title;
+                resultTitle.className = `text-xl font-bold ${details.color} uppercase tracking-wide`;
+                resultValue.textContent = formatter.format(parseFloat(value ? value.toFixed(2) : 0));
+
+                formulaButtons.forEach(btn => {
+                    btn.classList.remove('active-formula-btn');
+                    if (btn.dataset.name === activeFormula) {
+                        btn.classList.add('active-formula-btn');
+                    }
+                });
+
+                explanationContainer.className = `p-5 rounded-xl border-l-4 transition-all duration-300 ${details.style}`;
+                explanationContainer.innerHTML = `
+                    <h3 class="text-xl font-bold ${details.color} mb-2">${details.explanationTitle}</h3>
+                    <p class="text-gray-700 mb-4 text-sm leading-relaxed">${details.explanation}</p>
+                    <div class="mt-4 pt-4 border-t border-gray-200/50">
+                        <p class="font-bold text-gray-600 text-xs uppercase mb-1">Sintaks Rumus:</p>
+                        <code class="block bg-white/50 text-gray-800 p-2 rounded border border-gray-200 font-mono text-sm mb-2">${details.syntax}</code>
+                        <p class="text-xs text-gray-500 italic">${details.syntaxExplanation}</p>
+                    </div>
+                `;
+            }
+
+            function run() {
+                calculate();
+                updateDisplay();
+            }
+
+            inputs.forEach(input => {
+                input.addEventListener('input', run);
+            });
+
+            formulaButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    activeFormula = button.dataset.name;
+                    run();
+                });
+            });
+            
+            // Initial Run
+            run();
+        }
+
+        // --- Init ---
+        // Start on Tab 1, but cleaning UI loads when cleaning tab is clicked.
+        renderCleaningTable();
+        
+        // Initialize Playground Logic Immediately (it's lightweight)
+        initPlayground();
+
+    </script>
+</body>
+</html>
